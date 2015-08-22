@@ -1,0 +1,85 @@
+/* **********************************************************
+ * Copyright (c) 2014 Google, Inc.   All rights reserved.
+ * **********************************************************/
+
+/*
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ *
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * * Neither the name of Google, Inc. nor the names of its contributors may be
+ *   used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL GOOGLE, INC. OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+ * DAMAGE.
+ */
+
+/**
+***************************************************************************
+***************************************************************************
+\page page_drfuzz Dr. Fuzz: Dynamic Fuzz Testing Extension
+
+The \p Dr. Fuzz DynamoRIO Extension provides fuzz testing features.
+\p Dr. Fuzz is part of the Dr. Memory Framework.
+
+ - \ref sec_drfuzz_setup
+ - \ref sec_drfuzz_API
+
+\section sec_drfuzz_setup Setup
+
+To use \p Dr. Fuzz with your client, first locate the Dr. Memory
+Framework.  Then use the standard method of using an Extension with the
+name \p drfuzz.  The two steps will look like this in your client's
+\p CMakeLists.txt file:
+
+\code
+find_package(DrMemoryFramework)
+use_DynamoRIO_extension(clientname drfuzz)
+\endcode
+
+To point CMake at the framework, set the DrMemoryFramework_DIR variable to
+point at the \p drmf subdirectory of the Dr. Memory package that you are
+using.  For example:
+
+\code
+cmake -G"Ninja" -DDynamoRIO_DIR=c:/path/to/DynamoRIO-Windows-4.1.0-8/cmake -DDrMemoryFramework_DIR=c:/path/to/DrMemory-Windows-1.6.0-2/drmf ../mysrcs/
+\endcode
+
+That will automatically set up the include path and library dependence.
+
+Your client must call \p drfuzz_init() prior to accessing any API
+routines in \p drfuzz, and should call \p drfuzz_exit() at process exit
+time.
+
+\section sec_drfuzz_API Dr. Fuzz API
+
+\p Dr. Fuzz provides the following key features:
+ -# Repeat execution of the test target function with fuzzed arguments
+ -# Mutate argument values using bit flipping or random number algorithms
+ -# Schedule fuzz iterations for a target function and set of arguments
+ -# Report state information on a crash caused by fuzz inputs
+
+The client can use the provided Dr. Fuzz APIs to fuzz test the target application. The
+most flexible approach is to register fuzz target functions and directly control the
+fuzzing cycle using the callbacks. This approach also requires the most effort, so
+Dr. Fuzz additionally provides mutator and scheduler modules which can be leveraged
+to simplify the fuzzing procedure into a few higher level operations (pending completion
+of issue #1734).
+
+*/
